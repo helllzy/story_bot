@@ -1,6 +1,6 @@
 [![Typing SVG](https://readme-typing-svg.herokuapp.com/?color=3300CC&lines=story%20bot%20by%20helzy)](https://git.io/typing-svg)
 
-1. `git clone https://github.com/helllzy/StarkNet-Bot`
+1. `git clone https://github.com/helllzy/story_bot`
 2. `pip install -r reqs.txt`
 3. put keys in `wallets.txt`
 4. customize `config.py`
@@ -10,7 +10,7 @@
 
 ---
 
-1. `git clone https://github.com/helllzy/StarkNet-Bot`
+1. `git clone https://github.com/helllzy/story_bot`
 2. `pip install -r reqs.txt`
 3. поместите ключи в `wallets.txt`
 4. настройте `config.py`
