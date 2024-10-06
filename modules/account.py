@@ -2,6 +2,8 @@ from modules.utils import check_gas, check_transaction_status
 from data.data import contract_address
 from config import RPC
 
+from random import randint
+
 from web3 import Web3
 from loguru import logger
 
@@ -13,26 +15,45 @@ class CustomAccount():
         self.address = self.w3.eth.account.from_key(private_key).address
 
 
-    def get_transaction_data(self, module: str):
+    def get_transaction_data(self, module: str, value=0):
 
         if module.startswith('request'):
             data = '0x9f678cca'
 
-        match module:
-            case 'colorNFT':
-                data = '0x40d097c3' + '0' * (64-len(str(self.address)[2:])) + str(self.address)[2:]
-            case 'nerzoNFT':
-                data = '0x84bb1e42' + '0' * (64-len(str(self.address)[2:])) + str(self.address)[2:] + '0' * 63 + \
-                    '1' + '0' * 24 + 'e' * 40 + '0' * 126 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
-                        '0' * 64 + 'a' + '0' * 88 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+        elif 'NFT' in module:
+            data = '0x84bb1e42' + '0' * (64-len(str(self.address)[2:])) + str(self.address)[2:] + '0' * 63
 
-        return data
+            match module:
+                case 'nerzoNFT_story':
+                    data += str(randint(1, 5)) + '0' * 24 + 'e' * 40 + '0' * 126 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
+                        '0' * 64 + 'a' + '0' * 88 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+                case 'nerzoNFT_highway':
+                    data += str(randint(1, 5)) + '0' * 24 + 'e' * 40 + '0' * 126 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
+                        '0' + 'f' * 64 + '0' * 88 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+                case 'nerzoNFT_storylliad':
+                    data += str(randint(1, 5)) + '0' * 24 + 'e' * 40 + '0' * 126 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
+                        '0' + 'f' * 64 + '0' * 88 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+                case 'morkieNFT_mystory':
+                    data += '1' + '0' * 24 + 'e' * 40 + '0' * 49 + '0b1a2bc2ec5' + '0' * 66 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
+                        '0' * 64 + '1' + '0' * 49 + '0b1a2bc2ec5' + '0' * 28 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+                    value = 0.05
+                case 'morkieNFT_story':
+                    data += '1' + '0' * 24 + 'e' * 40 + '0' * 49 + '16345785d8a' + '0' * 66 + 'c' + '0' * 62 + '18' + '0' * 63 + '8' + \
+                        '0' * 64 + '1' + '0' * 49 + '16345785d8a' + '0' * 28 + 'e' * 40 + '0' * 63 + '1' + '0' * 128
+                    value = 0.1
+
+        else:
+            match module:
+                case 'color':
+                    data = '0x40d097c3' + '0' * (64-len(str(self.address)[2:])) + str(self.address)[2:]
+
+        return data, int(value*1e18)
 
 
     @check_gas
     def send_transaction(self, module: str):
 
-        data = self.get_transaction_data(module)
+        data, value = self.get_transaction_data(module)
 
         try:
             last_block = self.w3.eth.get_block('latest')
@@ -52,7 +73,7 @@ class CustomAccount():
                 'to': Web3.to_checksum_address(
                     contract_address[module[8:] + '_address' \
                         if module.startswith('request') else module + '_address']),
-                'value': 0,
+                'value': value,
                 'data': data
             }
 
