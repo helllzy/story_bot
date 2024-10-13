@@ -28,9 +28,13 @@ MODULES = [
 
 MODULES_COUNT = [5, 10]
 
-WALLETS_SLEEP = [30, 100]
+WALLETS_SLEEP = [50, 200]
 MODULES_SLEEP = [5, 30]
 
 RPC = 'https://testnet.storyrpc.io'
 
 MAX_GWEI = 50
+
+USE_PROXY = True
+
+THREADS_COUNT = 1

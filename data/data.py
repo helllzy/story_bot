@@ -1,5 +1,30 @@
-with open('wallets.txt') as file:
+from config import USE_PROXY
+from modules.utils import logger
+
+
+with open('data/wallets.txt') as file:
     KEYS = [i.strip() for i in file.readlines()]
+
+if len(KEYS) < 1:
+    logger.critical("You didn`t add wallets in wallets.txt!")
+    exit()
+
+WALLETS, PROXIES = {}, []
+
+if USE_PROXY:
+    with open('data/proxies.txt') as file:
+        PROXIES = [x.strip() for x in file.readlines()]
+
+    if len(KEYS) > len(PROXIES):
+        logger.critical('Number of wallets isn`t equal to number of proxies')
+        exit()
+
+for _id in range(len(KEYS)):
+
+    WALLETS[f'w{_id}'] = {"private_key": KEYS[_id]}
+
+    if USE_PROXY:
+        WALLETS[f'w{_id}']["proxy"] = PROXIES[_id]
 
 contract_address = {
     'color_address': 0x59a0B4E4074B2DB51B218A7cAb3B4F4715C8b360,

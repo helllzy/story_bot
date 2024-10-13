@@ -1,11 +1,15 @@
+from sys import platform
+from time import sleep
+from asyncio import WindowsSelectorEventLoopPolicy, set_event_loop_policy, run
 from modules.account import CustomAccount
 from modules.utils import sleeping, info
-from data.data import KEYS, HELZY
+from data.data import WALLETS, HELZY
 from config import (
     MODULES,
     MODULES_COUNT,
     WALLETS_SLEEP,
-    MODULES_SLEEP
+    MODULES_SLEEP,
+    THREADS_COUNT
 )
 
 from random import (
@@ -15,36 +19,55 @@ from random import (
     choice
 )
 
+from concurrent.futures import ThreadPoolExecutor
 from termcolor import cprint
 
 
-def main(keys):
+async def proceed_wallet(wallet, id):
 
-    for id, private_key in enumerate(keys, start=1):
+    ALL_MODULES = sample(MODULES, randint(*MODULES_COUNT))
 
-        ALL_MODULES = sample(MODULES, randint(*MODULES_COUNT))
+    account = CustomAccount(WALLETS[wallet], id)
 
-        account = CustomAccount(private_key)
+    await info(f'[{id}] | {account.address} | Actual modules: {", ".join(ALL_MODULES)}')
 
-        info(f'Working on {id} wallet: {account.address}')
+    for mod_id, module in enumerate(ALL_MODULES, start=1):
 
-        info(f'Actual modules: {", ".join(ALL_MODULES)}')
+        await info(f'[{id}] | Starting {module} module', 'blue')
 
-        for mod_id, module in enumerate(ALL_MODULES, start=1):
+        await account.send_transaction(module)
 
-            info(f'Starting {module} module', 'blue')
+        if mod_id != len(ALL_MODULES):
+            await sleeping(MODULES_SLEEP, f"[{id}] | Sleeping between modules", "yellow")
 
-            account.send_transaction(module)
 
-            if mod_id != len(ALL_MODULES):
-                sleeping(MODULES_SLEEP, "| Sleeping between modules", "yellow")
+def run_wallet(wallet, id):
+    run(proceed_wallet(wallet, id))
 
-        sleeping(WALLETS_SLEEP, "| Sleeping between wallets\n", "cyan")
+
+def main():
+
+    with ThreadPoolExecutor(max_workers=THREADS_COUNT) as executor:
+
+        for id, wallet in enumerate(wallets, start=1):
+            executor.submit(
+                run_wallet,
+                wallet,
+                id
+            )
+
+            sleep(randint(*WALLETS_SLEEP))
 
 
 if __name__ == '__main__':
-    shuffle(KEYS)
+
+    wallets = list(WALLETS.keys())
+
+    shuffle(wallets)
 
     cprint(choice(HELZY), choice(['green', 'magenta', 'light_cyan']))
 
-    main(KEYS)
+    if platform.startswith("win"):
+        set_event_loop_policy(WindowsSelectorEventLoopPolicy())
+
+    main()
