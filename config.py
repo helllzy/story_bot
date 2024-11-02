@@ -3,13 +3,16 @@
 "color"                                              |
 "nerzoNFT_story"                                     |
 "nerzoNFT_highway"                                   |
-"nerzoNFT_storylliad"                                |
-"morkieNFT_mystory"                                  |
-"morkieNFT_story"                                    |
+"unleash_supply"                                     |
+"piperx_swap"                                        |
 "request_WBTC"                                       |
 "request_USDC"                                       |
 "request_USDT"                                       |
 "request_WETH"                                       |
+-----------|these modules are not working|-----------|
+"morkieNFT_mystory"                                  |
+"morkieNFT_story"                                    |
+"nerzoNFT_storylliad"                                |
 -----------------------------------------------------|
 '''
 
@@ -17,16 +20,15 @@ MODULES = [
 "color",
 "nerzoNFT_story",
 "nerzoNFT_highway",
-"nerzoNFT_storylliad",
-"morkieNFT_mystory",
-"morkieNFT_story",
 "request_WBTC",
 "request_USDC",
 "request_USDT",
-"request_WETH"
+"request_WETH",
+"unleash_supply",
+"piperx_swap"
 ]
 
-MODULES_COUNT = [5, 10]
+MODULES_COUNT = [5, 9]
 
 WALLETS_SLEEP = [50, 200]
 MODULES_SLEEP = [5, 30]

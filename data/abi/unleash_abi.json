@@ -1,0 +1,63 @@
+[
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "arg0",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "arg1",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "arg2",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "arg3",
+          "type": "uint16"
+        }
+      ],
+      "name": "supply",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "arg0",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "arg1",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "arg2",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint16",
+                "name": "arg3",
+                "type": "uint16"
+            },
+            {
+                "internalType": "address",
+                "name": "arg4",
+                "type": "address"
+            }
+        ],
+        "name": "borrow",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    }
+]

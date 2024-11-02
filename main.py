@@ -35,7 +35,7 @@ async def proceed_wallet(wallet, id):
 
         await info(f'[{id}] | Starting {module} module', 'blue')
 
-        await account.send_transaction(module)
+        await account.module_processing(module)
 
         if mod_id != len(ALL_MODULES):
             await sleeping(MODULES_SLEEP, f"[{id}] | Sleeping between modules", "yellow")
@@ -46,7 +46,6 @@ def run_wallet(wallet, id):
 
 
 def main():
-
     with ThreadPoolExecutor(max_workers=THREADS_COUNT) as executor:
 
         for id, wallet in enumerate(wallets, start=1):
@@ -55,7 +54,6 @@ def main():
                 wallet,
                 id
             )
-
             sleep(randint(*WALLETS_SLEEP))
 
 
