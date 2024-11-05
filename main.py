@@ -1,6 +1,6 @@
 from sys import platform
 from time import sleep
-from asyncio import WindowsSelectorEventLoopPolicy, set_event_loop_policy, run
+from asyncio import run
 from modules.account import CustomAccount
 from modules.utils import sleeping, info
 from data.data import WALLETS, HELZY
@@ -66,6 +66,7 @@ if __name__ == '__main__':
     cprint(choice(HELZY), choice(['green', 'magenta', 'light_cyan']))
 
     if platform.startswith("win"):
+        from asyncio import WindowsSelectorEventLoopPolicy, set_event_loop_policy
         set_event_loop_policy(WindowsSelectorEventLoopPolicy())
 
     main()
